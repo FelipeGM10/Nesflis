@@ -1,0 +1,60 @@
+body{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+.ribeye-regular {
+    font-family: "Ribeye", serif;
+    font-weight: 400;
+    font-style: normal;
+    color: red;
+}
+  
+
+.sour-gummy-regular {
+    font-family: "Sour Gummy", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 100;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100;
+    color: whitesmoke;
+}
+.search{
+    height: 40px;
+    width: 80%;
+    border-radius: 60px;
+    outline: none;
+    border: 2px solid lightslategray;
+    margin-right: -35px;
+}
+.btn0{
+    height: 40px;
+    width: 40%;
+    outline: none;
+    border: none;
+    background-color:  lightslategray;
+    color: white;
+    font-weight: bold;
+    border-radius: 60px;
+}
+.hero{
+    background: url('../assets/img/Netflix-pantalla-blog-wow-1024x609.jpeg') no-repeat;
+    background-size: cover;
+    height: 100vh;
+    background-position: left;
+    width: 100%;
+}
+.features{
+    background-color:  lightslategray;
+    color: whitesmoke;
+}
+.btnn{
+    background-color:  lightslategray;
+    border-color:  lightslategray;
+}
+.btnn:hover{
+    background-color: slategray !important;
+    border-color: gray;
+}

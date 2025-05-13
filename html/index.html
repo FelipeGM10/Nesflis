@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Creando un BackEnd y FrontEnd">
+    <meta name="keywords" content="API, HTML, Einventiva, CSS, JavaScript">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Felipe González">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nesflis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ribeye&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<script>
+
+  function getActor(){
+    
+    const id = document.getElementById('idGet').value;
+    const apiURL = 'http://localhost:3001/actores/' + id;
+    
+      fetch(apiURL,{
+        method: "GET",
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/json'
+            }
+      })
+      .then(res => res.json())
+      .then(data => {
+
+        console.log(data)
+
+        let tableBody = ``;
+        let i = 0;
+        
+        tableBody += `<tr>
+        <td>${data.actor_id}</td>
+        <td>${data.nombre}</td>
+        <td>${data.fecha_nacimiento}</td>
+        </tr>`
+          
+
+        
+        document.getElementById('titleTable').innerHTML = 'Datos getActor';
+        document.getElementById('tableDatos').innerHTML = tableBody;  
+      })
+      .catch(error => {
+            console.error('Error fetching data: :(', error);
+        });
+  }
+
+  function getActores(){
+    const apiURL = 'http://localhost:3001/actores';
+    
+      fetch(apiURL,{
+        method: "GET",
+        dataType: "json",
+        headers: {
+            'Content-Type': 'application/json'
+            }
+      })
+      .then(res => res.json())
+      .then(data => {
+
+        console.log(data)
+
+        let tableBody = ``;
+        let i = 0;
+        data.map(e =>{
+          tableBody += `<tr>
+          <td>${e.actor_id}</td>
+          <td>${e.nombre}</td>
+          <td>${e.fecha_nacimiento}</td>
+          </tr>`
+          }
+
+        )
+        document.getElementById('titleTable').innerHTML = 'Datos getActores';
+        document.getElementById('tableDatos').innerHTML = tableBody;  
+      })
+      .catch(error => {
+            console.error('Error fetching data: :(', error);
+        });
+  }
+
+  function createActor(){
+    const apiURL = 'http://localhost:3001/actores';
+    
+    const name = document.getElementById('namef').value;
+    const birthday = document.getElementById('birthday').value;
+
+    const datapost = {
+      "name": name,
+      "birthday": birthday
+    }
+
+    console.log(JSON.stringify(datapost));
+
+    fetch(apiURL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+            datapost
+          ) 
+      })
+      .then(res => 
+      res.text()
+      )
+      .then(data => {
+        console.log('Información enviada',data);
+        document.getElementById('tituloPOST').innerHTML = 'Actor Creado - Respuesta del Servidor:'
+        document.getElementById('mensajePOST').innerHTML = data;
+      })
+      .catch(err => console.error('Error:', err));
+    
+  }
+
+  function updateActor(){
+    const id = document.getElementById('idf').value;
+
+    const apiURL = 'http://localhost:3001/actores/' + id;
+     
+    const name = document.getElementById('namef').value;
+    const birthday = document.getElementById('birthday').value;
+
+    const datapost = {
+      "name": name,
+      "birthday": birthday
+    }
+
+    console.log('console',JSON.stringify(datapost));
+
+    fetch(apiURL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(
+            datapost
+          ) 
+      })
+      .then(res => res.text())
+      .then(data => {
+        console.log('Información actualizada',data);
+        document.getElementById('tituloPOST').innerHTML = 'Actor Actualizado - Respuesta del Servidor:'
+        document.getElementById('mensajePOST').innerHTML = data;
+      })
+      .catch(err => console.error('Error:', err));
+
+
+  }
+
+</script>
+
+
+<body id="inicio" class="bg-dark">
+    <nav class="navbar navbar-expand-lg bg-dark sticky-top">
+        <div class="container">
+          <a class="navbar-brand ribeye-regular fs-2 sticky-top" href="#inicio">Nesflis</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse text-uppercase" id="navbarSupportedContent">
+            <ul class="navbar-nav m-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#" style="color: whitesmoke;">Principal</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#" style="color: whitesmoke;">Películas</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" aria-disabled="true" style="color: whitesmoke;">Series</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control px-2 search" type="search" placeholder="Buscar" aria-label="Search">
+              <button class="btn0" type="submit">Buscar</button>
+            </form>
+          </div>
+        </div>
+    </nav>
+    <section class="hero"> <!-- position-relative-->
+        <div class="container">
+            <div class="row min-vh-100 align-items-center">
+                <div class="col-6">
+                </div>
+                <div class="col-lg-6 text-left pt-5 "> <!--position-absolute start-50 bottom-50 end-50-->
+                    <h1 style="color: whitesmoke;">No, no es Netflix...</h1>
+                    <h1 style="color: red;">Es Nesflis!!</h1>
+                    <p class="text-body-light" style="color: whitesmoke;">Aquí encontrarás toda la información de tus series favoritas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="features">
+        <div class="container">
+            <div class="row text-center text-white py-5">
+                <div class="col-3">
+                    <i class="bi bi-house-door-fill"></i>
+                    <h3>Consulta</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+                <div class="col-3">
+                    <i class="bi bi-buildings-fill"></i>
+                    <h3>Actualiza</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+                <div class="col-3">
+                  <i class="bi bi-tree-fill"></i>
+                    <h3>Crea</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+                <div class="col-3">
+                    <i class="bi bi-egg-fill"></i>
+                    <h3>Elimina</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+      <div class="container py-5">
+        <h1 class="mb-4 text-end">Nuestros Servicios</h1>
+        <div class="row g-4">
+
+          <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="card h-100">
+              <!-- <img src="./assets/img/paquetaxo.webp" class="card-img-top" alt="paquetaxo"> -->
+              <div class="card-body">
+                <h5 class="card-title">getActores</h5>
+                <p class="card-text">Podrás consultar todos los actores disponibles en la DB</p>
+                <!-- <p class="card-text text-end"><strong>$9.99</strong></p> -->
+              </div>
+              <div class="card-footer bg-white border-top-0">
+                <button class="btn btn-primary btnn w-100" onclick="getActores()"><a href="#titleTable" style="text-decoration: none; color: white;">getActores</a></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="card h-100">
+              <!-- <img src="./assets/img/aceite.webp" class="card-img-top" alt="aceite"> -->
+              <div class="card-body">
+                <h5 class="card-title">getActor</h5>
+                <p class="card-text">Permite consultar a un actor en específico a través de un ID</p>
+                <!-- <p class="card-text text-end"><strong>$19.99</strong></p> -->
+                 <input type="number" class="form-control" id="idGet" placeholder="99">
+
+              </div>
+              <div class="card-footer bg-white border-top-0">
+                <button class="btn btn-primary btnn w-100" onclick="getActor()"><a href="#titleTable" style="text-decoration: none; color: white;">getActor</a></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="card h-100">
+              <!-- <img src="" class="card-img-top" alt="baby_food"> -->
+              <div class="card-body">
+                <h5 class="card-title">createActor</h5>
+                <p class="card-text">Te permitirá crear un nuevo registro en la DB de Actores</p>
+                <!-- <p class="card-text text-end"><strong>$5.99</strong></p> -->
+              </div>
+              <div class="card-footer bg-white border-top-0">
+                <button class="btn btn-primary btnn w-100"><a href="#form" style="text-decoration: none; color: white;">createActor</a></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+            <div class="card h-100">
+              <!-- <img src="" class="card-img-top" alt="fruits_and_vegetables"> -->
+              <div class="card-body">
+                <h5 class="card-title">updateActor</h5>
+                <p class="card-text">Podrás actualizar cualquier registro en la DB de Actores.</p>
+                <!-- <p class="card-text text-end"><strong>$15.99</strong></p> -->
+              </div>
+              <div class="card-footer bg-white border-top-0">
+                <button class="btn btn-primary btnn w-100"><a href="#form" style="text-decoration: none; color: white;">updateActor</a></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="row">
+        <div class="col-3"></div>
+        <div id="datosShow" class="col-6 features text-center">
+          <h2 id="titleTable" class="features">
+            
+          </h2>
+          <table class="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Fecha de Nacimiento</th>
+              </tr>
+            </thead>
+            <tbody id="tableDatos"></tbody>
+          </table>
+          
+        </div> 
+        <div class="col-3"></div>
+      </div>
+    </section>
+
+
+    <section id="formul">
+      <div class="container py-5 mx-auto">
+        <div class="row">
+          <h1 class="mb-4 text-center">Formulario</h1>
+
+          <div class="col-2"></div>
+
+          <form id="form" class="col-8 shadow p-3 mb-5 bg-body-tertiary rounded">
+              <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6 mb-3">
+                  <label for="id" class="form-label">ID</label>
+                  <input type="number" class="form-control" id="idf" placeholder="99">
+                </div>
+                <div class="col-3"></div>
+              </div>
+            
+              <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6 mb-3">
+                  <label for="name" class="form-label">Nombre</label>
+                  <input type="text" class="form-control" id="namef" placeholder="Juanito">
+                </div>
+                <div class="col-3"></div>
+              </div>
+
+              <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6 mb-3">
+                  <label for="birthday" class="form-label">Fecha de Nacimiento</label>
+                  <input type="datetime" class="form-control" id="birthday" placeholder="1999-12-31">
+                </div>
+                <div class="col-3"></div>
+
+            <div class="row">
+              <div class="col-3"></div>
+              <div class="col-3 d-grid gap-2 mx-auto">
+                <button type="button" class="btn btn-primary btnn" onclick="createActor()">createActor</button>
+              </div>
+              <div class="col-3 d-grid gap-2 mx-auto">
+                <button type="button" class="btn btn-primary btnn" onclick="updateActor()">updateActor</button>
+              </div>
+              <div class="col-3"></div>
+            </div>
+
+          </form>
+          <div class="col-2"></div>
+
+        </div>  
+        
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-6">
+            <h2 id="tituloPOST" style="color: whitesmoke;"></h2>
+            <p id="mensajePOST" style="color: whitesmoke;"></p>
+          </div>
+          <div class="col-3"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="bg-dark text-white pt-5 pb-5">
+      <div class="container align-items-center">
+          <div class="row mx-auto">
+              <div class="col-md-3 col-lg-3 col-xl-3 mx-auto">
+                  <h5 class="text-uppercase font-weight-bold">Nesflis</h5>
+                  <p>Nesflis llegó a traerte toda la información de tus series favoritas.</p>
+              </div>
+
+              <div class="col-md-2 col-lg-2 col-xl-2 mx-auto">
+                  <h5 class="text-uppercase font-weight-bold">Enlaces</h5>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-bg-dark"><a href="#inicio" class="text-white" style="text-decoration: none;">Inicio</a></li>
+                    <li class="list-group-item text-bg-dark"><a href="#services" class="text-white" style="text-decoration: none;">Servicios</a></li>
+                    <li class="list-group-item text-bg-dark"><a href="#formul" class="text-white" style="text-decoration: none;">Formulario</a></li>
+                  </ul>
+              </div>
+
+              <div class="col-md-4 col-lg-3 col-xl-3 mx-auto">
+                  <h5 class="text-uppercase font-weight-bold">Contacto</h5>
+                  <ul style="list-style: none;">
+                  <li>
+                    <a href="https://www.google.com/maps/place/Ciudad+de+M%C3%A9xico,+CDMX/data=!4m2!3m1!1s0x85ce0026db097507:0x54061076265ee841?sa=X&ved=1t:242&ictx=111" target="_blank" style="text-decoration: none; color: white">
+                    <i class="bi bi-geo-fill"></i> Ciudad de México, CP 06600, México
+                    </a>
+                  </li>
+                  <li>
+                    <a href="mailto: contacto@elmorromall.com" style="text-decoration: none; color: white;">
+                    <i class="bi bi-envelope-fill me-2"></i>contacto@nesflis.com
+                    </a>
+                  </li>
+                  <li>
+                    <a href="tel: +1 (123) 456-7890" target="_blank" style="text-decoration: none; color: white;">
+                    <i class="bi bi-telephone-fill me-2"></i>+1 (123) 456-7890
+                    </a>
+                  </li>
+                </ul>
+              </div>
+          </div>
+
+          <hr class="mb-5">
+
+          <div class="row align-items-center mx-auto">
+              <div class="col-md-7 col-lg-8">
+                  <p>Nesflis 2025 ® Copyright. Todos los derechos reservados por:
+                      <a href="#inicio" class="text-white" style="text-decoration: none;">
+                          <strong>Nesflis</strong>
+                      </a>
+                  </p>
+              </div>
+              <div class="col-md-5 col-lg-4">
+                  <div class="text-center text-md-end">
+                      <ul class="list-unstyled list-inline">
+                          <li class="list-inline-item">
+                              <a href="https://www.facebook.com" class="text-white"><i class="bi bi-facebook"></i></a>
+                          </li>
+                          <li class="list-inline-item">
+                              <a href="https://x.com/?lang=es" class="text-white"><i class="bi bi-twitter-x"></i></a>
+                          </li>
+                          <li class="list-inline-item">
+                              <a href="https://www.instagram.com" class="text-white"><i class="bi bi-instagram"></i></a>
+                          </li>
+                          <li class="list-inline-item">
+                              <a href="https://www.linkedin.com" class="text-white"><i class="bi bi-linkedin"></i></a>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
